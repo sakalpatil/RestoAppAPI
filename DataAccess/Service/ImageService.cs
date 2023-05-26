@@ -20,9 +20,10 @@ namespace RestoAppAPI.Service
               this.httpContextAccessor=httpContextAccessor;
               this.imageRepository=imageRepository;
          }
-        public async Task<string> Save(ImageModal image)
+        public async Task<ImageModal> Save(ImageModal image)
         {
             var validationmessage=ValidateFileUpload(image);
+            image.ValidationMessage=validationmessage;
              if (validationmessage==string.Empty)
             {            
                  
@@ -42,7 +43,7 @@ namespace RestoAppAPI.Service
                 return   imageRepository.Save(image);                
 
             }
-            return validationmessage;
+            return  image;
         }
         
         private string ValidateFileUpload(ImageModal image)

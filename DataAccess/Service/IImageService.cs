@@ -5,6 +5,6 @@ namespace RestoAppAPI.Service
 {
     public interface IImageService
     {
-        Task<string> Save(ImageModal image);
+        Task<ImageModal> Save(ImageModal image);
     }
 }

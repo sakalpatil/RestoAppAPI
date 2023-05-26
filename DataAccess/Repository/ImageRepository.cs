@@ -7,22 +7,24 @@ namespace RestoAppAPI.Repository
 {
     public class ImageRepository : IImageRepository
     {
-        private readonly IConfiguration Configuration;
+         private readonly IConfiguration _configuration;
+      
         public ImageRepository(IConfiguration configuration)
         {
-            Configuration = configuration;
-        }  
+            this._configuration = configuration;            
+        }        
+ 
 
-        public string Save(ImageModal image)
+        public ImageModal Save(ImageModal image)
         {       
-        string connectionString= @"Data Source=PUN3OL-PF1KGMNG\SQLEXPRESS;Initial Catalog=RestoManager;Integrated Security=True;";
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            // string connectionString= @"Data Source=PUN3OL-PF1KGMNG\SQLEXPRESS;Initial Catalog=RestoManager;Integrated Security=True;";            
+            
+            using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
             {
-                try
-                {
+              
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("InsertOrUpdateImage", connection))
+                    using (SqlCommand command = new SqlCommand("Insert_Update_Image", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
@@ -39,16 +41,20 @@ namespace RestoAppAPI.Repository
                         errorMessageParam.Direction = ParameterDirection.Output;
                         command.Parameters.Add(errorMessageParam);
 
+                        SqlParameter insertedId = new SqlParameter("@InsertedId", SqlDbType.Int);
+                        insertedId.Direction = ParameterDirection.Output;
+                        command.Parameters.Add(insertedId);
+
                         // Execute the command
                         command.ExecuteNonQuery();
+                         
+                        image.Id=(int)command.Parameters["@InsertedId"].Value;
+                        image.ValidationMessage=command.Parameters["@ErrorMessage"].Value.ToString();
+                        
                         // Retrieve the output parameter value
-                       return command.Parameters["@ErrorMessage"].Value.ToString();
+                        return image;
                     }
-                }
-                catch (SqlException ex)
-                {                
-                    throw(ex);
-                }
+               
             }
         }
     }

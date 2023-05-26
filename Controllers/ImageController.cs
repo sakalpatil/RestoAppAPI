@@ -22,10 +22,10 @@ namespace RestoAppAPI.Controllers
         
         public async Task<IActionResult> Save([FromForm] ImageModal image)
         {            
-            var ErrorMessage= await this.imageService.Save(image);
-            if(ErrorMessage!=string.Empty)
+            var imageModal= await this.imageService.Save(image);
+            if(imageModal.ValidationMessage!=string.Empty)
             {
-                return BadRequest(ErrorMessage);
+                return BadRequest(imageModal.ValidationMessage);
 
             }
             return Ok();
