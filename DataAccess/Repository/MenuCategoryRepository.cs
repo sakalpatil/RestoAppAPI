@@ -7,21 +7,22 @@ using Microsoft.Extensions.Configuration;
 
 namespace RestoAppAPI.Repository
 {
-    class MenuCategoryRepository : IMenuCategoryRepository
+   public class MenuCategoryRepository : IMenuCategoryRepository
     {
         private readonly IConfiguration _configuration;
+      
         public MenuCategoryRepository(IConfiguration configuration)
         {
-            this._configuration = configuration;
+            this._configuration = configuration;            
         }        
 
         public List<MenuCategoryModal> GetMenuCategory(int Pagesize=10, int PageNumber=1)
         {
             //  @"Data Source=PUN3OL-PF1KGMNG\SQLEXPRESS;Initial Catalog=RestoManager;Integrated Security=True;";
-        string connectionString=  _configuration.GetConnectionString("DefaultConnection");
+       
         List<MenuCategoryModal> menuCategories = new List<MenuCategoryModal>();
 
-        using (SqlConnection connection = new SqlConnection(connectionString))
+        using (SqlConnection connection = new SqlConnection( _configuration.GetConnectionString("DefaultConnection")))
         {
             using (SqlCommand command = new SqlCommand("Get_MenuCategories", connection))
             {
@@ -47,6 +48,34 @@ namespace RestoAppAPI.Repository
         }
         return menuCategories;
         }
-        
+
+        public string SaveMenuCategory(MenuCategoryModal menuCategoryModal)
+        {
+             using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand("Insert_Update_MenuCategory", connection))
+                    {
+                        command.CommandType = CommandType.StoredProcedure;
+
+                        // Input parameters
+                        command.Parameters.AddWithValue("@ID", menuCategoryModal.ID);
+                        command.Parameters.AddWithValue("@Name", menuCategoryModal.Name);
+                        command.Parameters.AddWithValue("@Description", menuCategoryModal.Description);
+                        command.Parameters.AddWithValue("@UserId", 1);
+                        command.Parameters.AddWithValue("@ImageId", menuCategoryModal.Image.Id);
+
+                        // Output parameter
+                        SqlParameter errorMessageParam = command.Parameters.Add("@ErrorMessage", SqlDbType.NVarChar, 100);
+                        errorMessageParam.Direction = ParameterDirection.Output;
+
+                        command.ExecuteNonQuery();
+
+                        return(string)errorMessageParam.Value;
+                    
+                    }
+                }
+           
+        }
     }
 }

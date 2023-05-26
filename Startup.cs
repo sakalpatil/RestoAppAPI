@@ -51,12 +51,14 @@ namespace RestoAppAPI
                     });
             });
             services.AddHttpContextAccessor();
-
+           
+            services.AddScoped<IImageRepository,ImageRepository>();
             services.AddScoped<IMenuCategoryService,MenuCategoryService>();
             services.AddScoped<IImageService,ImageService>();
             services.AddScoped<IMenuCategoryRepository,MenuCategoryRepository>();
             services.AddScoped<ITokenRepository,TokenRepository>();
-            services.AddScoped<IImageRepository,ImageRepository>();
+           
+           
 
             ////////////////////////////////////////////////////
     services.AddAuthentication(options =>

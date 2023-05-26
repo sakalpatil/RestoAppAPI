@@ -4,6 +4,6 @@ namespace RestoAppAPI.Repository
 {
     public interface IImageRepository
     {
-        string Save(ImageModal image);
+        ImageModal Save(ImageModal image);
     }
 }

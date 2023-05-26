@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestoAppAPI.Modal;
 using RestoAppAPI.Service;
@@ -12,9 +14,11 @@ namespace RestoAppAPI.Controllers
     public class MenuCategoryController : ControllerBase
     {         
         private readonly IMenuCategoryService _menuCategoryService;
+      
         public MenuCategoryController(IMenuCategoryService menuCategoryService)
         {
             _menuCategoryService=menuCategoryService;
+            
         }   
 
         [HttpGet()]
@@ -24,11 +28,21 @@ namespace RestoAppAPI.Controllers
             
             return Ok(_menuCategoryService.GetMenuCategory(Pagesize, PageNumber));
         }
-
-        // public IActionResult Post(MenuCategoryModal category, IFile)
-        // {
-
-        // }
+    [HttpPost()]
+        public async Task<IActionResult> Post([FromForm]MenuCategoryModal category)
+        {
+       
+                
+                category.Image.FileName=category.Name;
+                category.Image.FileDescription=category.Description;   
+                string error= await _menuCategoryService.SaveMenuCategory(category); 
+                if(error!=string.Empty)
+                {
+                    return BadRequest(error);
+                }   
+                return Ok();
+                 
+        }
 
     }
 }
