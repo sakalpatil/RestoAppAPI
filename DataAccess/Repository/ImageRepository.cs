@@ -16,9 +16,7 @@ namespace RestoAppAPI.Repository
  
 
         public ImageModal Save(ImageModal image)
-        {       
-            // string connectionString= @"Data Source=PUN3OL-PF1KGMNG\SQLEXPRESS;Initial Catalog=RestoManager;Integrated Security=True;";            
-            
+        {   
             using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
             {
               

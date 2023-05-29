@@ -18,7 +18,7 @@ namespace RestoAppAPI.Service
         }
         public List<MenuCategoryModal> GetMenuCategory(int Pagesize=10, int PageNumber=1)
         {
-           return  _categoryRepository.GetMenuCategory( Pagesize, PageNumber);
+           return  _categoryRepository.GetByPagination( Pagesize, PageNumber);
         }
 
         public async Task<string> SaveMenuCategory(MenuCategoryModal menuCategory)
@@ -27,7 +27,7 @@ namespace RestoAppAPI.Service
                 menuCategory.Image= await _imageService.Save(menuCategory.Image);                
                 if(menuCategory.Image.ValidationMessage.Length==0)
                 {
-                   return _categoryRepository.SaveMenuCategory(menuCategory);
+                   return _categoryRepository.Save(menuCategory);
                 }
                 else
                 {
