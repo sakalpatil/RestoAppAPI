@@ -16,10 +16,9 @@ namespace RestoAppAPI.Repository
             this._configuration = configuration;            
         }        
 
-        public List<MenuCategoryModal> GetMenuCategory(int Pagesize=10, int PageNumber=1)
+        public List<MenuCategoryModal> GetByPagination(int Pagesize=10, int PageNumber=1)
         {
-            //  @"Data Source=PUN3OL-PF1KGMNG\SQLEXPRESS;Initial Catalog=RestoManager;Integrated Security=True;";
-       
+            
         List<MenuCategoryModal> menuCategories = new List<MenuCategoryModal>();
 
         using (SqlConnection connection = new SqlConnection( _configuration.GetConnectionString("DefaultConnection")))
@@ -49,7 +48,7 @@ namespace RestoAppAPI.Repository
         return menuCategories;
         }
 
-        public string SaveMenuCategory(MenuCategoryModal menuCategoryModal)
+        public string Save(MenuCategoryModal menuCategoryModal)
         {
              using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
