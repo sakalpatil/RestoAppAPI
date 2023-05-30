@@ -22,6 +22,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.FileProviders;
 using System.IO;
+using RestoAppAPI.Middlewares;
 
 namespace RestoAppAPI
 {
@@ -51,12 +52,13 @@ namespace RestoAppAPI
                     });
             });
             services.AddHttpContextAccessor();
-           
+            services.AddScoped<IExceptionLogRepository, ExceptionLogRepository>();
             services.AddScoped<IImageRepository,ImageRepository>();
             services.AddScoped<IMenuCategoryService,MenuCategoryService>();
             services.AddScoped<IImageService,ImageService>();
             services.AddScoped<IMenuCategoryRepository,MenuCategoryRepository>();
-            services.AddScoped<ITokenRepository,TokenRepository>();
+            services.AddTransient<ITokenRepository,TokenRepository>();
+            
            
            
 
@@ -111,10 +113,16 @@ namespace RestoAppAPI
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
+            app.UseMiddleware<ExceptionMiddlewareADO>();
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Images")),
                 RequestPath = "/Images"
+            });
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Logs")),
+                RequestPath = "/Logs"
             });
 
             app.UseEndpoints(endpoints =>
