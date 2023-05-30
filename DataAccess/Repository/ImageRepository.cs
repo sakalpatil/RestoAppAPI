@@ -22,7 +22,7 @@ namespace RestoAppAPI.Repository
               
                     connection.Open();
 
-                    using (SqlCommand command = new SqlCommand("Insert_Update_Image", connection))
+                    using (SqlCommand command = new SqlCommand("Insert_Update_Image1", connection))
                     {
                         command.CommandType = CommandType.StoredProcedure;
 
