@@ -95,6 +95,22 @@ namespace RestoAppAPI
             services.AddDbContext<AuthDbContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", builder =>
+                {
+                    builder.AllowAnyOrigin()
+                        .AllowAnyMethod()
+                        .AllowAnyHeader();
+                });
+            });
+
+            services.AddControllers().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
+            });
+
+
            
         }
 
@@ -109,7 +125,7 @@ namespace RestoAppAPI
             }
             
             app.UseHttpsRedirection();
-          
+            
             app.UseRouting();
             app.UseAuthentication();
             app.UseAuthorization();
@@ -124,7 +140,7 @@ namespace RestoAppAPI
                 FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Logs")),
                 RequestPath = "/Logs"
             });
-
+             app.UseCors("AllowAll");
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();

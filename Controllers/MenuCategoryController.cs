@@ -29,13 +29,11 @@ namespace RestoAppAPI.Controllers
             return Ok(_menuCategoryService.GetMenuCategory(Pagesize, PageNumber));
         }
     [HttpPost()]
-        public async Task<IActionResult> Post([FromForm]MenuCategoryModal category)
-        {
-       
+        public IActionResult Post(MenuCategoryModal category)
+        {      
                 
-                category.Image.FileName=category.Name;
-                category.Image.FileDescription=category.Description;   
-                string error= await _menuCategoryService.SaveMenuCategory(category); 
+                   
+                string error= _menuCategoryService.SaveMenuCategory(category); 
                 if(error!=string.Empty)
                 {
                     return BadRequest(error);

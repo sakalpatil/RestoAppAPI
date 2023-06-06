@@ -62,7 +62,7 @@ namespace RestoAppAPI.Repository
                         command.Parameters.AddWithValue("@Name", menuCategoryModal.Name);
                         command.Parameters.AddWithValue("@Description", menuCategoryModal.Description);
                         command.Parameters.AddWithValue("@UserId", 1);
-                        command.Parameters.AddWithValue("@ImageId", menuCategoryModal.Image.Id);
+                        command.Parameters.AddWithValue("@IsDeleted", menuCategoryModal.IsDeleted);                        
 
                         // Output parameter
                         SqlParameter errorMessageParam = command.Parameters.Add("@ErrorMessage", SqlDbType.NVarChar, 100);

@@ -25,7 +25,7 @@ namespace RestoAppAPI.Repository
             {
                 using (SqlConnection connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection")))
                 {
-                    SqlCommand command = new SqlCommand("Insert_Exception_Log1", connection);
+                    SqlCommand command = new SqlCommand("Insert_Exception_Log", connection);
                     command.CommandType = CommandType.StoredProcedure;
                     command.Parameters.AddWithValue("@LineNumber", exceptionModal.LineNumber);
                     command.Parameters.AddWithValue("@MethodName", exceptionModal.MethodName);

@@ -21,18 +21,12 @@ namespace RestoAppAPI.Service
            return  _categoryRepository.GetByPagination( Pagesize, PageNumber);
         }
 
-        public async Task<string> SaveMenuCategory(MenuCategoryModal menuCategory)
-        {            
+        public string SaveMenuCategory(MenuCategoryModal menuCategory)
+        {           
                         
-                menuCategory.Image= await _imageService.Save(menuCategory.Image);                
-                if(menuCategory.Image.ValidationMessage.Length==0)
-                {
-                   return _categoryRepository.Save(menuCategory);
-                }
-                else
-                {
-                    return menuCategory.Image.ValidationMessage;
-                }
+                        
+              return _categoryRepository.Save(menuCategory);
+               
         }
     }
 }
