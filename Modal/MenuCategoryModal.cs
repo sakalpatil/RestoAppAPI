@@ -8,8 +8,9 @@ namespace RestoAppAPI.Modal
       
       public int? ID { get; set; }
       public string Name { get; set; }
-      public string Description { get; set; }        
-      public ImageModal Image { get; set; }
+      public string Description { get; set; }    
+      public bool IsDeleted { get; set; }    
+    
    }
 
 }
